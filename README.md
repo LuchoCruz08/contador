@@ -42,21 +42,31 @@ Un mecanismo de sondeo de 5 segundos mantiene el contador sincronizado con el se
 
 ```bash
 git clone https://github.com/LuchoCruz08/contador.git
-cd counter-app
+cd contador
+```
 2. Install dependencies
+```bash
 pnpm install
+```
 Or if you're using npm:
+```bash
 npm install
+```
 3. Set up environment variables
 Create a .env.local file in the root with any required variables.
+```bash
 DATABASE_URL={SUPABASE_URL}.
-
-4. Run the development server
-pnpm dev
-Or with npm:
-npm run dev
-Open http://localhost:3000 in your browser to see the app.
 ```
+4. Run the development server
+```bash
+pnpm dev
+```
+Or with npm:
+```bash
+npm run dev
+```
+Open http://localhost:3000 in your browser to see the app.
+
 ---
 
 
