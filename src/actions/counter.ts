@@ -3,6 +3,7 @@
 import { db } from "@/db";
 import { counters } from "@/db/schema";
 import { eq } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
 
 const COUNTER_ID = "global";
 
@@ -48,6 +49,7 @@ export async function incrementCounter() {
     .update(counters)
     .set({ value: newValue, lastUpdated: new Date() })
     .where(eq(counters.id, COUNTER_ID));
+  revalidatePath("/");
   return { value: newValue, createdAt };
 }
 
@@ -58,5 +60,6 @@ export async function decrementCounter() {
     .update(counters)
     .set({ value: newValue, lastUpdated: new Date() })
     .where(eq(counters.id, COUNTER_ID));
+  revalidatePath("/");
   return { value: newValue, createdAt };
 }
