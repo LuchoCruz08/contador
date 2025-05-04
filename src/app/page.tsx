@@ -1,10 +1,10 @@
 import { getCounter } from "@/actions/counter";
-import { CountdownTimer } from "@/components/CountdownTimer";
+import CountdownTimer from "@/components/CountdownTimer";
 import CounterButtons from "@/components/CounterButtons";
 import { Card } from "@/components/ui/card";
 
 export default async function Home() {
-  const { value, createdAt } = await getCounter();
+  const { value } = await getCounter();
 
   return (
     <main className="flex min-h-screen items-center justify-center">
@@ -15,7 +15,7 @@ export default async function Home() {
           </div>
           <CounterButtons />
         </Card>
-        <CountdownTimer createdAt={createdAt} className="w-full" />
+        <CountdownTimer className="w-full" />
       </div>
     </main>
   );

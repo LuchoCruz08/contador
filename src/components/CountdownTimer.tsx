@@ -1,56 +1,33 @@
-"use client";
-
-import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { Timer } from "lucide-react";
+import { getCounter } from "@/actions/counter";
 
 interface CountdownTimerProps {
-  createdAt: Date | null;
   className?: string;
 }
 
-export function CountdownTimer({ createdAt, className }: CountdownTimerProps) {
-  const [timeLeft, setTimeLeft] = useState("--:--");
-  const [expired, setExpired] = useState(false);
-  const [progress, setProgress] = useState(100);
+export default async function CountdownTimer({
+  className,
+}: CountdownTimerProps) {
+  const { createdAt } = await getCounter();
+  const now = new Date();
+  const created = new Date(createdAt ?? new Date());
+  const totalDuration = 20 * 60 * 1000;
+  const elapsed = now.getTime() - created.getTime();
+  const remaining = totalDuration - elapsed;
 
-  useEffect(() => {
-    if (!createdAt) return;
+  const expired = remaining <= 0;
+  const progress = expired
+    ? 0
+    : Math.max(0, Math.min(100, (remaining / totalDuration) * 100));
 
-    const interval = setInterval(() => {
-      const now = new Date();
-      const created = new Date(createdAt);
-      const totalDuration = 20 * 60 * 1000; 
-      const elapsed = now.getTime() - created.getTime();
-      const remaining = totalDuration - elapsed;
+  const minutes = Math.floor(Math.max(0, remaining) / 1000 / 60);
+  const seconds = Math.floor((Math.max(0, remaining) / 1000) % 60);
 
-      if (remaining <= 0) {
-        setTimeLeft("00:00");
-        setProgress(0);
-        setExpired(true);
-        clearInterval(interval);
-        return;
-      }
-
-      const minutes = Math.floor(remaining / 1000 / 60);
-      const seconds = Math.floor((remaining / 1000) % 60);
-      const percentage = Math.max(
-        0,
-        Math.min(100, (remaining / totalDuration) * 100)
-      );
-
-      setTimeLeft(
-        `${minutes.toString().padStart(2, "0")}:${seconds
-          .toString()
-          .padStart(2, "0")}`
-      );
-      setProgress(percentage);
-      setExpired(false);
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [createdAt]);
+  const timeLeft = `${minutes.toString().padStart(2, "0")}:${seconds
+    .toString()
+    .padStart(2, "0")}`;
 
   return (
     <Card
@@ -72,7 +49,9 @@ export function CountdownTimer({ createdAt, className }: CountdownTimerProps) {
         </div>
         <div>
           <p className="text-sm font-medium text-muted-foreground">
-            {expired ? "El contador se reinició" : "Tiempo hasta que se reinicie"}
+            {expired
+              ? "El contador se reinició"
+              : "Tiempo hasta que se reinicie"}
           </p>
           <p
             className={cn(
