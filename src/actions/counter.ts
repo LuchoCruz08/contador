@@ -24,21 +24,8 @@ export async function getCounter() {
 
     return { value: 0, createdAt: now };
   }
+
   const { value, createdAt } = result[0];
-  const created_at = createdAt ? new Date(createdAt) : now;
-  const diff = now.getTime() - created_at.getTime();
-
-  const twentyMinutes = 20 * 60 * 1000;
-
-  if (diff >= twentyMinutes) {
-    await db
-      .update(counters)
-      .set({ value: 0, createdAt: now, lastUpdated: now })
-      .where(eq(counters.id, COUNTER_ID));
-
-    return { value: 0, createdAt: now };
-  }
-
   return { value, createdAt };
 }
 
