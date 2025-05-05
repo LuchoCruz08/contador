@@ -48,7 +48,7 @@ export default async function CountdownTimer({
           <Timer className="h-5 w-5" />
         </div>
         <div>
-          <p className="text-sm font-medium text-muted-foreground">
+          <p className="text-sm text-muted-foreground">
             {expired
               ? "El contador se reinició"
               : "Tiempo hasta que se reinicie"}
